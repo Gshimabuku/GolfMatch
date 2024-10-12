@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * ユーザーモデル
  */
-class User extends Model
+class User extends Authenticatable
 {
     use HasFactory;
 
@@ -28,6 +28,7 @@ class User extends Model
     protected $fillable = [
         'login_id',
         'password',
+        'auto_login_id',
         'username',
         'role',
     ];
