@@ -28,6 +28,6 @@ class Friend extends Model
     protected $fillable = [
         'main_user_id',
         'friend_user_id',
-        'is_deleted'
+        'un_follow'
     ];
 }

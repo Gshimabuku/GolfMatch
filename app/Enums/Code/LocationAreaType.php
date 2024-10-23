@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace App\Enums\Code;
 
 /**
  * 所在地エリアタイプタイプ

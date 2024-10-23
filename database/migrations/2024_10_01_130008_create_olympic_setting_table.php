@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * オリンピック設定タイプテーブル
+ * オリンピック設定テーブル
  */
 return new class extends Migration
 {
@@ -14,20 +14,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('olympic_setting_types', function (Blueprint $table) {
+        Schema::create('olympic_settings', function (Blueprint $table) {
 
             //------------------------------------------------------------------------------------------
             // テーブルコメント
             //------------------------------------------------------------------------------------------
-            $table->comment('ユーザーテーブル');
+            $table->comment('オリンピック設定テーブル');
 
             //------------------------------------------------------------------------------------------
             // カラム
             //------------------------------------------------------------------------------------------
-            $table->bigIncrements('olympic_setting_id')->primary()->comment('オリンピック設定タイプID');
-            $table->unsignedBigInteger('round_id')->comment('ラウンドID');
-            $table->unsignedTinyInteger('olympic_type')->comment('オリンピックタイプ');
-            $table->unsignedBigInteger('point')->comment('ポイント数');
+            $table->bigIncrements('olympic_setting_id')->primary()->comment('オリンピック設定ID');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+            $table->string('olympic_setting_name')->comment('オリンピック設定名');
 
             //------------------------------------------------------------------------------------------
             // 共通カラム
@@ -38,8 +37,8 @@ return new class extends Migration
             //------------------------------------------------------------------------------------------
             // リレーションシップ情報
             //------------------------------------------------------------------------------------------
-            // 所在地テーブル
-            $table->foreign('round_id')->references('round_id')->on('rounds');
+            // ユーザーテーブル
+            $table->foreign('user_id')->references('user_id')->on('users');
         });
     }
 

@@ -26,6 +26,8 @@ class Location extends Model
      * 複数代入可能カラム
      */
     protected $fillable = [
+        'is_okinawa',
+        'location_area_type',
         'location_name',
         'location_kana',
     ];

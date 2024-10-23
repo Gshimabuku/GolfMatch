@@ -15,18 +15,19 @@ class Olympic_setting_type extends Model
     /**
      * テーブル名
      */
-    protected $table = '';
+    protected $table = 'olympic_setting_types';
 
     /**
      * 主キー
      */
-    protected $primaryKey = '';
+    protected $primaryKey = 'olympic_setting_type_id';
 
     /**
      * 複数代入可能カラム
      */
     protected $fillable = [
-        '',
-        '',
+        'group_id',
+        'olympic_type',
+        'point',
     ];
 }

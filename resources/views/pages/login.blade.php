@@ -7,9 +7,12 @@
 
 @section('content')
 
-    <div id="login-container">
-        <h1>ログイン</h1>
-        <form method="POST" action="{{ route('login.auth') }}">
+    <div id="auth-container">
+        <div class="change-auth">
+            <h1 class="change-auth-left">ログイン</h1>
+            <h3 class="change-auth-right change-auth-select"><a href="{{ route('register.index') }}" class="change-auth-a">新規登録</a></h3>
+        </div>
+        <form method="POST" action="{{ route('auth.login') }}">
             {{ csrf_field() }}
             <div class="form-group">
                 <label for="login_id">ログインID</label>
@@ -19,8 +22,9 @@
                 <label for="password">パスワード</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">ログイン</button>
+            <button type="submit" class="login-btn">ログイン</button>
         </form>
     </div>
 
+    <script></script>
 @endsection

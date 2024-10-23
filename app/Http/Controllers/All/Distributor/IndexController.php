@@ -17,7 +17,7 @@ class IndexController extends DistributorController
      */
     public function index(Request $request)
     {
-        //
+        // DISTRIBUTOR HOME
         return view('pages.distributor.index');
     }
 

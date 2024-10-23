@@ -31,6 +31,6 @@ class Course extends Model
         'location_id',
         'address',
         'course_type',
-        'par',
+        'course_par',
     ];
 }

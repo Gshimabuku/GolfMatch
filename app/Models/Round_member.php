@@ -15,19 +15,20 @@ class Round_member extends Model
     /**
      * テーブル名
      */
-    protected $table = 'olympic_setting_type';
+    protected $table = 'round_members';
 
     /**
      * 主キー
      */
-    protected $primaryKey = 'olympic_setting_id';
+    protected $primaryKey = 'round_member_id';
 
     /**
      * 複数代入可能カラム
      */
     protected $fillable = [
         'round_id',
-        'olympic_type',
-        'point',
+        'user_id',
+        'guest_name',
+        'total_score',
     ];
 }

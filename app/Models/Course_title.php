@@ -26,6 +26,7 @@ class Course_title extends Model
      * 複数代入可能カラム
      */
     protected $fillable = [
+        'course_id',
         'course_title_name',
     ];
 }

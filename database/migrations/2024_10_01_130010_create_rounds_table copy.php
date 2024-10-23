@@ -31,6 +31,7 @@ return new class extends Migration
             $table->unsignedBigInteger('course_yardage_title_id')->comment('コースヤードタイトルID');
             $table->date('play_date')->comment('プレー日');
             $table->unsignedBigInteger('total_score')->comment('トータルスコア（メインユーザー）');
+            $table->unsignedBigInteger('is_games')->default(0)->comment('使用ゲーム');
             $table->unsignedTinyInteger('is_deleted')->default(0)->comment('論理削除');
 
             //------------------------------------------------------------------------------------------

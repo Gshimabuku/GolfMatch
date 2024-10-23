@@ -27,10 +27,10 @@ class Round extends Model
      */
     protected $fillable = [
         'user_id',
-        'course_id',
         'out_course_title_id',
         'in_course_title_id',
         'play_date',
         'total_score',
+        'is_deleted',
     ];
 }

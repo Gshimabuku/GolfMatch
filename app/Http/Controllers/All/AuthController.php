@@ -14,8 +14,10 @@ use App\Http\Controllers\StaffController;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
+use function Laravel\Prompts\alert;
+
 /**
- * スタッフ - 認証 Controller
+ * 認証 Controller
  */
 class AuthController extends StaffController
 {
@@ -37,7 +39,7 @@ class AuthController extends StaffController
      * @param Request $request
      * @return void
      */
-    public function auth(FormRequest $request)
+    public function login(FormRequest $request)
     {
         //------------------------------------------------------------------------------------------
         // 初期処理（一旦、セッションをクリアしておく）
@@ -57,7 +59,6 @@ class AuthController extends StaffController
         if (!Auth::attempt($userInfo)) {
             return redirect()->back();
         }
-
         //------------------------------------------------------------------------------------------
         // ユーザー情報を取得
         //------------------------------------------------------------------------------------------
@@ -67,23 +68,26 @@ class AuthController extends StaffController
         //------------------------------------------------------------------------------------------
         // 権限ごとのホーム画面へ
         //------------------------------------------------------------------------------------------
-        if ($user->role == 1) {
-            // Staff
+        if ($user->role == RoleType::ADMIN->value) {
+            // Staffとして再ログイン
+            Auth::logout();
+            session()->invalidate();
+            session()->regenerateToken();
+            Auth::guard('web')->login($user);
+            $request->session()->regenerate(); // セッション初期化
+
             $loginInfo = new LoginStaffDto();
             $loginInfo->userId = $user->id;
             $loginInfo->loginId = $user->login_id;
             Session::put('login.staff', $loginInfo);
 
             return redirect()->route('staff.home');
-        } else if ($user->role == 2) {
-            // Distributor
+        } else if ($user->role == RoleType::LOGIN->value) {
             // Distributorとして再ログイン
             Auth::logout();
             session()->invalidate();
             session()->regenerateToken();
-            if (!Auth::guard('distributor')->attempt($userInfo)) {
-                return redirect()->back();
-            }
+            Auth::guard('distributor')->login($user);
             $request->session()->regenerate(); // セッション初期化
 
             $loginInfo = new LoginDistributorDto();
@@ -101,7 +105,7 @@ class AuthController extends StaffController
      * @param Request $request
      * @return void
      */
-    public function auto(Request $request)
+    public function auto(FormRequest $request)
     {
         //------------------------------------------------------------------------------------------
         // 初期処理（一旦、セッションをクリアしておく）
@@ -113,20 +117,35 @@ class AuthController extends StaffController
         //------------------------------------------------------------------------------------------
         // 認証判定
         //------------------------------------------------------------------------------------------
-        $credentials = $request->route()->parameters();
+        $user = User::where('auto_login_id', $request->route('uuid'))->first();
+        if (empty($user)) {
+            return redirect()->route('auth.index');
+        }
+        if ($user->role == RoleType::ADMIN->value) {
+            // Staff
+            Auth::login($user); //  ログイン
 
-        //------------------------------------------------------------------------------------------
-        // スタッフ情報をセッションに保持
-        //------------------------------------------------------------------------------------------
-        $request->session()->regenerate(); // セッション初期化
-        $loginInfo = new LoginStaffDto();
-        $loginInfo->loginId = $credentials['id'];
-        Session::put(SessionEnum::LOGIN_STAFF, $loginInfo);
+            $request->session()->regenerate(); // セッション初期化
 
-        //------------------------------------------------------------------------------------------
-        // スタッフHomeへ
-        //------------------------------------------------------------------------------------------
-        return redirect()->route('staff.home');
+            $loginInfo = new LoginStaffDto();
+            $loginInfo->userId = $user->id;
+            $loginInfo->loginId = $user->login_id;
+            Session::put('login.staff', $loginInfo);
+
+            return redirect()->route('staff.home');
+        } else if ($user->role == RoleType::LOGIN->value) {
+            // Distributor
+            Auth::guard('distributor')->login($user);
+
+            $request->session()->regenerate(); // セッション初期化
+
+            $loginInfo = new LoginDistributorDto();
+            $loginInfo->userId = $user->id;
+            $loginInfo->loginId = $user->login_id;
+            Session::put('login.distributor', $loginInfo);
+
+            return redirect()->route('distributor.home');
+        }
     }
 
     /**

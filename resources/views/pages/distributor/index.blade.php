@@ -7,6 +7,6 @@
 
 @section('content')
 
-    <h1>DISTRIBUTOR HOME</h1>
+    <h1>Distributor ホーム画面</h1>
 
 @endsection

@@ -28,6 +28,6 @@ class Hole extends Model
     protected $fillable = [
         'course_title_id',
         'hole_number',
-        'par',
+        'hole_par',
     ];
 }

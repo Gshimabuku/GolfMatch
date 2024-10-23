@@ -31,12 +31,12 @@ return new class extends Migration
             $table->string('user_name', 50)->comment('ユーザー名');
             $table->unsignedTinyInteger('role')->default(2)->comment('権限');
             $table->unsignedTinyInteger('is_deleted')->default(0)->comment('論理削除');
-            $table->rememberToken();
 
             //------------------------------------------------------------------------------------------
             // 共通カラム
             //------------------------------------------------------------------------------------------
-            $table->timestamps();
+            $table->datetime('created_at')->useCurrent()->comment('作成日時');
+            $table->datetime('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('更新日時');
 
             //------------------------------------------------------------------------------------------
             // リレーションシップ情報
